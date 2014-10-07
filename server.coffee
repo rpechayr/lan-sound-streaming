@@ -29,6 +29,7 @@ streamSound = (client) ->
 
 net = require("net")
 server = net.createServer (client) ->
+  client.setNoDelay(true)
   cbs = () =>
     streamSound(client)
   setInterval cbs, 1000
