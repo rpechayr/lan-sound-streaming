@@ -1,0 +1,16 @@
+{
+  "name": "remote_sound_server",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "speaker": "^0.2.1",
+    "wav": "^0.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rpechayr@gmail.com",
+  "license": "ISC"
+}
