@@ -1,26 +1,17 @@
 Speaker = require("speaker")
-PORT = 5007
-dgram = require("dgram")
-client = dgram.createSocket("udp4")
+PORT = 8124
+net = require("net")
 
 speaker = new Speaker {
   channels: 1
   bitDepth: 8     
   sampleRate: 11025
 }
+client = new net.Socket()
+client.connect PORT, "127.0.0.1", () ->
 
-client.on "listening", ->
-  address = client.address()
-  console.log "UDP Client listening on " + address.address + ":" + address.port
-  client.setBroadcast true
-  client.setMulticastTTL 128
-  client.addMembership "224.1.1.1"
-  return
 
-client.on "message", (message, remote) ->
-  console.log "A: Epic Command Received. Preparing Relay."
-  console.log "B: From: " + remote.address + ":" + remote.port + " - " + message
+
+client.on "data", (message) ->
   speaker.write message
-  return
-
-client.bind PORT
+  
