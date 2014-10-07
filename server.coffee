@@ -10,7 +10,7 @@ speaker = new Speaker {
 
 
 streamSound = (client) ->
-  file = fs.createReadStream("/Users/rpechayr/Downloads/1up.wav")
+  file = fs.createReadStream("#{process.cwd()}/1up.wav")
   reader = new wav.Reader()
 
 
