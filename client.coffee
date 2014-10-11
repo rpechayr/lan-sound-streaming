@@ -4,8 +4,8 @@ net = require("net")
 
 speaker = new Speaker {
   channels: 1
-  bitDepth: 8     
-  sampleRate: 11025
+  bitDepth: 16     
+  sampleRate: 44100
 }
 client = new net.Socket()
 client.connect PORT, "127.0.0.1", () ->
