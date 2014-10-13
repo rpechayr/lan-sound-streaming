@@ -11,6 +11,7 @@ speaker = new Speaker {
 
 
 streamSound = (client) ->
+  
   file = fs.createReadStream("#{process.cwd()}/sample.wav")
   reader = new wav.Reader()
   # the "format" event gets emitted at the end of the WAVE header
@@ -21,23 +22,33 @@ streamSound = (client) ->
       console.log(data)
       #speaker.write data
       client.write data
-    return
-
+  
   file.pipe reader
+    
 
 
 net = require("net")
 server = net.createServer (client) ->
   console.log "New client"
-  client.setNoDelay(true)
-  cbs = () =>
-    streamSound(client)
-  setInterval cbs, 1000
+  #client.setNoDelay(true)
+  streamSound(client)
+  # cbs = () =>
+  #   streamSound(client)
+  # interval = setInterval cbs, 1000
+  client.on "error", (err) ->
+    #clearInterval interval
+    console.log "Client Error .."
+  
+  client.on "close", () ->
+    #clearInterval interval
+    console.log "client closed connection"
+    
   return
+  
 
 port = 8124
 server.listen port , ->
-  console.log "Server listeging on port #{port}"
+  console.log "Server listening on port #{port}"
 
 
 # advertise a http server on port 4321
