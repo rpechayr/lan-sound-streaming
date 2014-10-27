@@ -36,7 +36,7 @@ print "You chose device: "+p.get_device_info_by_index(device_id)['name']
 
 
 
-TCP_IP = '127.0.0.1'
+TCP_IP = '0.0.0.0'
 TCP_PORT = 5123
 BUFFER_SIZE = CHUNK  # Normally 1024, but we want fast response
 
@@ -50,7 +50,7 @@ conn, addr = s.accept()
 
 
 # send audio stream information
-conn.send(json.dumps({"format": FORMAT,"sampleRate": RATE,"channel": 1}));
+conn.send(json.dumps({"format": FORMAT,"sampleRate": RATE,"channel": 1}) + "\n\r");
 
 data = conn.recv(16);
 
