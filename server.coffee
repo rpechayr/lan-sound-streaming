@@ -2,6 +2,7 @@ fs = require("fs")
 wav = require("wav")
 Speaker = require("Speaker")
 mdns = require("mdns")
+util = require("util")
 
 speaker = new Speaker {
   channels: 1
@@ -12,15 +13,16 @@ speaker = new Speaker {
 
 streamSound = (client) ->
   
-  file = fs.createReadStream("#{process.cwd()}/sample.wav")
+  file = fs.createReadStream("#{process.cwd()}/voice.wav")
   reader = new wav.Reader()
   # the "format" event gets emitted at the end of the WAVE header
   reader.on "format", (format) ->
     # server.send format, 0, format.length, 5007, "224.1.1.1"
     # # the WAVE header is stripped from the output of the reader
     reader.on "data", (data) ->
-      console.log(data)
-      #speaker.write data
+      #util.log("Sent #{data.length}")
+      #util.log("-------------------------")
+      speaker.write data
       client.write data
   
   file.pipe reader
@@ -30,14 +32,14 @@ streamSound = (client) ->
 net = require("net")
 server = net.createServer (client) ->
   console.log "New client"
-  #client.setNoDelay(true)
+  client.setNoDelay(true)
   streamSound(client)
   # cbs = () =>
   #   streamSound(client)
   # interval = setInterval cbs, 1000
   client.on "error", (err) ->
     #clearInterval interval
-    console.log "Client Error .."
+    console.log "Client Error .. #{util.inspect(err)}"
   
   client.on "close", () ->
     #clearInterval interval
